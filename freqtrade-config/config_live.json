@@ -1,0 +1,4 @@
+{
+  "_note": "DO NOT USE until Phase 3 paper trading passes all metric gates.",
+  "_fill_in": "Copy config_paper.json here, set dry_run=false, and update exchange keys to LIVE keys."
+}
