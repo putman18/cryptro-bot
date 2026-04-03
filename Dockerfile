@@ -11,9 +11,9 @@ COPY execution/ /freqtrade/execution/
 
 # Copy startup script
 COPY start.sh /freqtrade/start.sh
-RUN chmod +x /freqtrade/start.sh
+RUN sed -i 's/\r//' /freqtrade/start.sh && chmod +x /freqtrade/start.sh
 
 USER ftuser
 EXPOSE 8080
 
-CMD ["/freqtrade/start.sh"]
+CMD ["/bin/bash", "/freqtrade/start.sh"]
