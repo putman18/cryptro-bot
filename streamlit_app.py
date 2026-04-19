@@ -24,9 +24,9 @@ st.set_page_config(
     layout="wide"
 )
 
-API_BASE = os.getenv("FREQTRADE_API_URL", "http://187.124.250.181:8080/api/v1")
-API_USER = os.getenv("FREQTRADE_API_USER", "admin")
-API_PASS = os.getenv("FREQTRADE_API_PASSWORD", "20gohtHHpsTUplJCWr3JHqFD_ZI1NAjW")
+API_BASE = st.secrets.get("FREQTRADE_API_URL", os.getenv("FREQTRADE_API_URL", ""))
+API_USER = st.secrets.get("FREQTRADE_API_USER", os.getenv("FREQTRADE_API_USER", "admin"))
+API_PASS = st.secrets.get("FREQTRADE_API_PASSWORD", os.getenv("FREQTRADE_API_PASSWORD", ""))
 
 START_BALANCE = 1000.0
 PAIRS = ["BTC/USD", "ETH/USD", "XRP/USD"]
