@@ -28,7 +28,7 @@ for line in env_file.read_text().splitlines() if env_file.exists() else []:
         k, _, v = line.partition("=")
         os.environ.setdefault(k.strip(), v.strip())
 
-API_BASE             = "http://127.0.0.1:8080/api/v1"
+API_BASE             = os.getenv("FREQTRADE_API_URL", "http://127.0.0.1:8080/api/v1")
 API_USER             = os.getenv("FREQTRADE_API_USER", "admin")
 API_PASS             = os.getenv("FREQTRADE_API_PASSWORD", "")
 WEBHOOK_TRADING      = os.getenv("DISCORD_WEBHOOK_TRADING", "")
@@ -43,12 +43,12 @@ PAIRS = ["BTC/USD", "ETH/USD", "XRP/USD"]
 # ---------------------------------------------------------------------------
 
 def _api(path: str):
+    import base64
     url = f"{API_BASE}{path}"
-    mgr = urllib.request.HTTPPasswordMgrWithDefaultRealm()
-    mgr.add_password(None, API_BASE, API_USER, API_PASS)
-    opener = urllib.request.build_opener(urllib.request.HTTPBasicAuthHandler(mgr))
+    token = base64.b64encode(f"{API_USER}:{API_PASS}".encode()).decode()
+    req = urllib.request.Request(url, headers={"Authorization": f"Basic {token}"})
     try:
-        with opener.open(url, timeout=8) as r:
+        with urllib.request.urlopen(req, timeout=8) as r:
             return json.loads(r.read())
     except Exception as e:
         print(f"  API error {path}: {e}")
@@ -97,11 +97,11 @@ def post_hourly_update():
     bal_pct    = bal_change / start_bal * 100
 
     # P&L stats
-    profit_usd    = profit.get("profit_closed_coin", 0)
-    profit_pct    = profit.get("profit_closed_percent_mean", 0) * 100
-    total_trades  = profit.get("trade_count", 0)
-    win_rate      = profit.get("winrate", 0) * 100
-    profit_factor = profit.get("profit_factor", 0)
+    profit_usd    = profit.get("profit_closed_coin", 0) or 0
+    profit_pct    = (profit.get("profit_closed_percent_mean", 0) or 0) * 100
+    total_trades  = profit.get("trade_count", 0) or 0
+    win_rate      = (profit.get("winrate", 0) or 0) * 100
+    profit_factor = profit.get("profit_factor", 0) or 0
 
     color = 0x00cc44 if profit_usd >= 0 else 0xff4444
 

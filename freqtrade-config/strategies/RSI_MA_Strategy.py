@@ -33,21 +33,34 @@ class RSI_MA_Strategy(IStrategy):
     INTERFACE_VERSION = 3
 
     # Timeframe
-    timeframe = "1h"
+    timeframe = "30m"
 
     # Stoploss
     stoploss = -0.05
 
-    # Trailing stop (disabled by default - enable if winners are cut too short)
-    trailing_stop = False
+    # Trailing stop - locks in profit once trade is up 3%, trails 2% below peak
+    # Means minimum 1% profit captured on any trade that hits +3%
+    trailing_stop = True
     trailing_stop_positive = 0.02
     trailing_stop_positive_offset = 0.03
     trailing_only_offset_is_reached = True
 
-    # ROI - let signals handle exits (very long to avoid premature exit)
+    # ROI table - safety net for trades that never get an exit signal
+    # Primary exits are still EMA crossover and SMA200 break
+    # Trailing stop locks in profit once up 3%
     minimal_roi = {
-        "0": 100.0
+        "0":   0.08,   # take 8% profit immediately if hit
+        "60":  0.05,   # take 5% after 60 minutes
+        "180": 0.03,   # take 3% after 3 hours
+        "360": 0.01    # take 1% after 6 hours (cut deadweight)
     }
+
+    # Short selling disabled - Coinbase Advanced spot only
+    # Enable on Binance/Bybit futures when moving to live trading
+    can_short = False
+
+    # Enable partial position exits
+    position_adjustment_enable = True
 
     # Run once per candle close
     process_only_new_candles = True
@@ -98,6 +111,39 @@ class RSI_MA_Strategy(IStrategy):
         ] = 1
 
         return dataframe
+
+    def custom_entry_price(self, pair, current_time, proposed_rate, entry_tag, side, **kwargs):
+        """
+        Pullback entry: place limit order at EMA50 instead of buying at market.
+        For longs:  wait for price to dip back to EMA50 after bullish crossover.
+        For shorts: wait for price to bounce up to EMA50 after bearish crossover.
+        Capped at 2% from proposed rate so orders don't sit stale.
+        """
+        dataframe, _ = self.dp.get_analyzed_dataframe(pair, self.timeframe)
+        if dataframe.empty:
+            return proposed_rate
+
+        ema50 = dataframe.iloc[-1]["ema50"]
+
+        if side == "long":
+            # Limit order at EMA50, but no more than 2% below current price
+            return max(ema50, proposed_rate * 0.98)
+        else:
+            # Limit order at EMA50, but no more than 2% above current price
+            return min(ema50, proposed_rate * 1.02)
+
+    def adjust_trade_position(self, trade, current_time, current_rate, current_profit,
+                               min_stake, max_stake, current_entry_rate, current_exit_rate,
+                               current_entry_profit, current_exit_profit, **kwargs):
+        """
+        Partial exit: close 50% of position once profit hits +3%.
+        Works for both long and short trades.
+        The trailing stop then manages the remaining 50%.
+        Only triggers once per trade (checked via nr_of_successful_exits == 0).
+        """
+        if current_profit >= 0.03 and trade.nr_of_successful_exits == 0:
+            return -(trade.stake_amount / 2)
+        return None
 
     def populate_exit_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
         dataframe.loc[

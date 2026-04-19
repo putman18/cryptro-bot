@@ -1,5 +1,5 @@
 {
-  "max_open_trades": 3,
+  "max_open_trades": 5,
   "stake_currency": "USD",
   "stake_amount": 50,
   "tradable_balance_ratio": 0.99,
@@ -10,7 +10,7 @@
   "trading_mode": "spot",
   "margin_mode": "",
   "unfilledtimeout": {
-    "entry": 10,
+    "entry": 90,
     "exit": 10,
     "exit_timeout_count": 0,
     "unit": "minutes"
@@ -39,7 +39,12 @@
     "pair_whitelist": [
       "BTC/USD",
       "ETH/USD",
-      "XRP/USD"
+      "XRP/USD",
+      "SOL/USD",
+      "ADA/USD",
+      "LINK/USD",
+      "DOGE/USD",
+      "AVAX/USD"
     ],
     "pair_blacklist": []
   },

@@ -1,0 +1,113 @@
+<mxfile host="app.diagrams.net" modified="2026-04-04T00:00:00.000Z" agent="Claude" version="21.0.0">
+  <diagram name="Crypto Bot Infrastructure" id="crypto-infra">
+    <mxGraphModel dx="1422" dy="762" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- ================================================================ -->
+        <!-- VPS Container -->
+        <!-- ================================================================ -->
+        <mxCell id="vps" value="Hostinger VPS  |  187.124.250.181  |  Ubuntu 24.04" style="points=[[0,0],[0.25,0],[0.5,0],[0.75,0],[1,0],[1,0.25],[1,0.5],[1,0.75],[1,1],[0.75,1],[0.5,1],[0.25,1],[0,1],[0,0.75],[0,0.5],[0,0.25]];shape=mxgraph.cisco.sites.generic_building;strokeColor=#0066CC;fontColor=#0066CC;fillColor=#dae8fc;fontSize=13;fontStyle=1;verticalLabelPosition=top;verticalAlign=bottom;" vertex="1" parent="1">
+          <mxGeometry x="320" y="120" width="60" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- VPS bounding box -->
+        <mxCell id="vps-box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;fontSize=12;verticalAlign=top;dashed=1;dashPattern=8 4;" vertex="1" parent="1">
+          <mxGeometry x="240" y="200" width="740" height="480" as="geometry" />
+        </mxCell>
+        <mxCell id="vps-label" value="Hostinger VPS  —  187.124.250.181  —  Docker Compose" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=13;fontStyle=1;fontColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="240" y="205" width="740" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- ================================================================ -->
+        <!-- Docker Containers -->
+        <!-- ================================================================ -->
+
+        <!-- Freqtrade -->
+        <mxCell id="freqtrade" value="&lt;b&gt;Freqtrade&lt;/b&gt;&lt;br&gt;freqtradeorg/freqtrade:stable&lt;br&gt;Port 8080&lt;br&gt;&lt;br&gt;RSI_MA_Strategy v6&lt;br&gt;BTC / ETH / XRP&lt;br&gt;30m candles  |  Paper trading" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="280" y="270" width="200" height="120" as="geometry" />
+        </mxCell>
+
+        <!-- Discord Updater -->
+        <mxCell id="discord-updater" value="&lt;b&gt;Discord Updater&lt;/b&gt;&lt;br&gt;python:3.11-slim&lt;br&gt;&lt;br&gt;crypto_hourly_update.py&lt;br&gt;Polls API every 5 min&lt;br&gt;Posts hourly summaries" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="560" y="270" width="200" height="120" as="geometry" />
+        </mxCell>
+
+        <!-- Streamlit Dashboard -->
+        <mxCell id="dashboard" value="&lt;b&gt;Streamlit Dashboard&lt;/b&gt;&lt;br&gt;python:3.11-slim&lt;br&gt;Port 8501&lt;br&gt;&lt;br&gt;Live positions&lt;br&gt;Trade history + P&amp;L chart&lt;br&gt;Auto-refresh 30s" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="280" y="460" width="200" height="120" as="geometry" />
+        </mxCell>
+
+        <!-- n8n -->
+        <mxCell id="n8n" value="&lt;b&gt;n8n&lt;/b&gt;&lt;br&gt;n8nio/n8n&lt;br&gt;Port 5678&lt;br&gt;&lt;br&gt;Automation workflows&lt;br&gt;(future use)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="560" y="460" width="200" height="120" as="geometry" />
+        </mxCell>
+
+        <!-- Docker internal network label -->
+        <mxCell id="docker-net" value="Docker internal network  —  containers communicate via service name (e.g. http://freqtrade:8080)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontColor=#666666;fontStyle=2;" vertex="1" parent="1">
+          <mxGeometry x="240" y="630" width="740" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- ================================================================ -->
+        <!-- External Services -->
+        <!-- ================================================================ -->
+
+        <!-- Coinbase -->
+        <mxCell id="coinbase" value="&lt;b&gt;Coinbase Advanced&lt;/b&gt;&lt;br&gt;Market Data API&lt;br&gt;BTC / ETH / XRP&lt;br&gt;OHLCV candles" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f0f0f0;strokeColor=#333333;fontSize=11;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="30" y="290" width="160" height="90" as="geometry" />
+        </mxCell>
+
+        <!-- Discord -->
+        <mxCell id="discord" value="&lt;b&gt;Discord&lt;/b&gt;&lt;br&gt;#paper-trading&lt;br&gt;Hourly summary embed&lt;br&gt;&lt;br&gt;#trade-alerts&lt;br&gt;BUY / SELL instant alert" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="1040" y="270" width="180" height="130" as="geometry" />
+        </mxCell>
+
+        <!-- User browser -->
+        <mxCell id="browser" value="&lt;b&gt;Your Browser&lt;/b&gt;&lt;br&gt;Dashboard  :8501&lt;br&gt;FreqUI  :8080&lt;br&gt;n8n  :5678" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f0f0f0;strokeColor=#333333;fontSize=11;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="1040" y="460" width="180" height="100" as="geometry" />
+        </mxCell>
+
+        <!-- Strategy box -->
+        <mxCell id="strategy" value="&lt;b&gt;Strategy: RSI_MA_Strategy v6&lt;/b&gt;&lt;br&gt;Entry: EMA20 crosses above EMA50&lt;br&gt;+ Price above SMA200  + ADX &gt; 20  + RSI &gt; 50&lt;br&gt;Exit: EMA20 crosses below EMA50  OR  Price &lt; SMA200&lt;br&gt;Stop loss: -5%  |  Max open trades: 3  |  Stake: $50/trade" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="240" y="720" width="740" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- ================================================================ -->
+        <!-- Connections -->
+        <!-- ================================================================ -->
+
+        <!-- Coinbase -> Freqtrade -->
+        <mxCell id="e1" value="Market data&lt;br&gt;every 30m" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=10;" edge="1" source="coinbase" target="freqtrade" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Freqtrade -> Discord Updater (internal) -->
+        <mxCell id="e2" value="REST API poll&lt;br&gt;every 5 min" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=10;" edge="1" source="freqtrade" target="discord-updater" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Freqtrade -> Dashboard (internal) -->
+        <mxCell id="e3" value="REST API poll&lt;br&gt;every 30s" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=10;" edge="1" source="freqtrade" target="dashboard" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Discord Updater -> Discord -->
+        <mxCell id="e4" value="Webhook POST&lt;br&gt;embeds" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.3;entryDx=0;entryDy=0;fontSize=10;" edge="1" source="discord-updater" target="discord" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Dashboard -> Browser -->
+        <mxCell id="e5" value="HTTP :8501" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=10;" edge="1" source="dashboard" target="browser" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Freqtrade -> Browser (FreqUI) -->
+        <mxCell id="e6" value="FreqUI :8080" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;exitX=1;exitY=0.3;exitDx=0;exitDy=0;entryX=0;entryY=0.2;entryDx=0;entryDy=0;fontSize=10;dashed=1;" edge="1" source="freqtrade" target="browser" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

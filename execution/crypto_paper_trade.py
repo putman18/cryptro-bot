@@ -351,12 +351,27 @@ def _check_kill_conditions(daily_pct: float, open_trades: list):
         stop_bot()
 
 
+def watchdog():
+    """Check every 5 minutes and restart bot if it has stopped."""
+    print("Watchdog started - checking bot every 5 minutes...")
+    webhook = os.getenv("DISCORD_WEBHOOK_ALERTS", "")
+    while True:
+        if not is_running():
+            print(f"[{datetime.now().strftime('%H:%M:%S')}] Bot not running - restarting...")
+            post_discord(webhook, content="Bot was down - watchdog restarting it now.")
+            start_bot()
+        else:
+            print(f"[{datetime.now().strftime('%H:%M:%S')}] Bot OK")
+        time.sleep(300)  # 5 minutes
+
+
 def main():
     parser = argparse.ArgumentParser(description="Manage paper trading bot")
     parser.add_argument("--start", action="store_true", help="Start the paper trading bot")
     parser.add_argument("--stop", action="store_true", help="Stop the paper trading bot")
     parser.add_argument("--status", action="store_true", help="Show bot status")
     parser.add_argument("--daily-summary", action="store_true", help="Post daily summary to Discord")
+    parser.add_argument("--watchdog", action="store_true", help="Monitor and auto-restart bot if it crashes")
     args = parser.parse_args()
 
     if args.start:
@@ -367,6 +382,8 @@ def main():
         show_status()
     elif args.daily_summary:
         daily_summary()
+    elif args.watchdog:
+        watchdog()
     else:
         parser.print_help()
 
